@@ -3,44 +3,65 @@ import type { Channel, DefaultGenerics, Event, StreamChat } from "stream-chat";
 import type { AIAgent } from "../types";
 import { OpenAIResponseHandler } from "./OpenAIResponseHandler";
 
-// OpenAI 智能体类
+/**
+ * OpenAI 智能体类
+ * 负责管理 OpenAI 助手的生命周期和消息处理
+ */
 export class OpenAIAgent implements AIAgent {
-  // OpenAI 客户端
+  /** OpenAI 客户端 */
   private openai?: OpenAI;
-  // OpenAI 助手智能体
+  
+  /** OpenAI 助手智能体 */
   private assistant?: OpenAI.Beta.Assistants.Assistant;
-  // OpenAI 线程
+  
+  /** OpenAI 线程 */
   private openAiThread?: OpenAI.Beta.Threads.Thread;
-  // 最后交互时间戳
-  private lastInteractionTs = Date.now();
+  
+  /** 最后交互时间戳 */
+  private lastInteractionTimestamp = Date.now();
+  
+  /** 回复处理程序数组 */
+  private responseHandlers: OpenAIResponseHandler[] = [];
 
-  // 回复处理程序数组
-  private handlers: OpenAIResponseHandler[] = [];
-
-  // 构造函数
+  /**
+   * 构造函数
+   * @param chatClient Stream Chat 客户端实例
+   * @param channel Stream Chat 通道实例
+   */
   constructor(
     readonly chatClient: StreamChat,
     readonly channel: Channel
   ) {}
 
-  // 销毁智能体方法
+  /**
+   * 销毁智能体
+   * 清理事件监听器和断开连接
+   */
   dispose = async () => {
     this.chatClient.off("message.new", this.handleMessage);
     await this.chatClient.disconnectUser();
 
-    this.handlers.forEach((handler) => handler.dispose());
-    this.handlers = [];
+    this.responseHandlers.forEach((handler) => handler.dispose());
+    this.responseHandlers = [];
   };
 
-  // 获取用户信息方法
+  /**
+   * 获取用户信息
+   */
   get user() {
     return this.chatClient.user;
   }
 
-  // 获取最后交互时间戳方法
-  getLastInteraction = (): number => this.lastInteractionTs;
+  /**
+   * 获取最后交互时间戳
+   * @returns 最后交互的时间戳
+   */
+  getLastInteraction = (): number => this.lastInteractionTimestamp;
 
-  // 初始化智能体方法
+  /**
+   * 初始化智能体
+   * 创建 OpenAI 客户端、助手和线程
+   */
   init = async () => {
     // 初始化 OpenAI 客户端
     const apiKey = process.env.OPENAI_API_KEY as string | undefined;
@@ -87,7 +108,11 @@ export class OpenAIAgent implements AIAgent {
     this.chatClient.on("message.new", this.handleMessage);
   };
 
-  // 获取写助手提示方法
+  /**
+   * 获取写作助手提示
+   * @param context 写作上下文
+   * @returns 写作助手提示字符串
+   */
   private getWritingAssistantPrompt = (context?: string): string => {
     // 获取当前日期
     const currentDate = new Date().toLocaleDateString("en-US", {
@@ -119,7 +144,10 @@ export class OpenAIAgent implements AIAgent {
 Your goal is to provide accurate, current, and helpful written content. Failure to use web search for recent topics will result in an incorrect answer.`;
   };
 
-  // 处理消息事件方法
+  /**
+   * 处理消息事件
+   * @param e 消息事件对象
+   */
   private handleMessage = async (e: Event<DefaultGenerics>) => {
     if (!this.openai || !this.openAiThread || !this.assistant) {
       console.log("OpenAI not initialized");
@@ -135,12 +163,12 @@ Your goal is to provide accurate, current, and helpful written content. Failure 
     if (!message) return;
 
     // 更新最后交互时间戳
-    this.lastInteractionTs = Date.now();
+    this.lastInteractionTimestamp = Date.now();
 
-    // 获取用户自定义消息中的写任务任务（如果有）
+    // 获取用户自定义消息中的写作任务（如果有）
     const writingTask = (e.message.custom as { writingTask?: string })
       ?.writingTask;
-      // 构建写助手提示文上下文（如果有写任务任务）
+    // 构建写作助手提示上下文（如果有写作任务）
     const context = writingTask ? `Writing Task: ${writingTask}` : undefined;
     const instructions = this.getWritingAssistantPrompt(context);
 
@@ -150,13 +178,13 @@ Your goal is to provide accurate, current, and helpful written content. Failure 
       content: message,
     });
 
-    // 创建空消息到 Channel 线程
+    // 创建空消息到 Channel 作为占位符
     const { message: channelMessage } = await this.channel.sendMessage({
       text: "",
       ai_generated: true,
     });
 
-    // 发送思考状态事件到 Channel 线程
+    // 发送思考状态事件
     await this.channel.sendEvent({
       type: "ai_indicator.update",
       ai_state: "AI_STATE_THINKING",
@@ -182,13 +210,16 @@ Your goal is to provide accurate, current, and helpful written content. Failure 
       channelMessage,
       () => this.removeHandler(handler)
     );
-    this.handlers.push(handler);
+    this.responseHandlers.push(handler);
     void handler.run();
   };
 
-  // 移除回复处理程序方法
+  /**
+   * 移除回复处理程序
+   * @param handlerToRemove 要移除的处理程序
+   */
   private removeHandler = (handlerToRemove: OpenAIResponseHandler) => {
-    this.handlers = this.handlers.filter(
+    this.responseHandlers = this.responseHandlers.filter(
       (handler) => handler !== handlerToRemove
     );
   };
