@@ -1,5 +1,5 @@
-import Login from "@/pages/login";
-import { useTheme } from "@/hooks/use-theme";
+import Login from "/@pages/login";
+import { useTheme } from "/@/hooks/use-theme";
 
 function App() {
   const { theme, setTheme } = useTheme();
