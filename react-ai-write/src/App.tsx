@@ -1,10 +1,9 @@
 import Login from "@/components/login";
-import { useContext, useState } from "react";
-import { ThemeProviderContext } from "@/contexts/theme-context";
+import { useTheme } from "@/hooks/use-theme";
 
 function App() {
-  const { theme, setTheme } = useContext(ThemeProviderContext);
-  console.log(theme, window.document.documentElement.classList);
+  const { theme, setTheme } = useTheme();
+  console.log(theme, window.document.documentElement.classList, setTheme);
   return (
     <div className="h-screen bg-background">
       <Login />
