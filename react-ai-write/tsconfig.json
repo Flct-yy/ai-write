@@ -8,8 +8,6 @@
     "baseUrl": ".",
     "paths": {
       "/@/*": ["./src/*"],
-      "/@components/*": ["./src/components/*"],
-      "/@pages/*": ["./src/pages/*"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,

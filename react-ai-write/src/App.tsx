@@ -1,4 +1,4 @@
-import Login from "/@pages/login";
+import Login from "/@/pages/login";
 import { useTheme } from "/@/hooks/use-theme";
 
 function App() {
