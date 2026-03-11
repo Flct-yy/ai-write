@@ -14,6 +14,7 @@ import {
   SelectScrollUpButton,
   SelectScrollDownButton
 } from "/@/components/inputs/select";
+import { Checkbox } from "/@/components/inputs/checkbox";
 import { useTheme } from "/@/hooks/use-theme";
 
 function App() {
@@ -48,6 +49,9 @@ function App() {
           </SelectGroup>
         </SelectContent>
       </Select>
+      <br />
+      <Checkbox id="terms" />
+      <label htmlFor="terms">我同意服务条款</label>
     </div>
   );
 }
