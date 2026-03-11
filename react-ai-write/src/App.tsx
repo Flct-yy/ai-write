@@ -16,6 +16,7 @@ import {
 } from "/@/components/inputs/select";
 import { Checkbox } from "/@/components/inputs/checkbox";
 import { useTheme } from "/@/hooks/use-theme";
+import { RadioGroup, RadioGroupItem } from "/@/components/inputs/radio-group";
 
 function App() {
   const { theme, setTheme } = useTheme();
@@ -52,6 +53,12 @@ function App() {
       <br />
       <Checkbox id="terms" />
       <label htmlFor="terms">我同意服务条款</label>
+      <br />
+      <RadioGroup>
+        <RadioGroupItem value="apple">Apple</RadioGroupItem>
+        <RadioGroupItem value="banana">Banana</RadioGroupItem>
+        <RadioGroupItem value="orange">Orange</RadioGroupItem>
+      </RadioGroup>
     </div>
   );
 }

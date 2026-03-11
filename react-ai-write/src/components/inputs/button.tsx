@@ -22,11 +22,11 @@
  * ```
  */
 
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { type VariantProps } from "class-variance-authority"
-import { buttonVariants } from "./variants/button"
-import { cn } from "/@/utils/classnames"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { type VariantProps } from "class-variance-authority";
+import { buttonVariants } from "./variants/button";
+import { cn } from "/@/utils/classnames";
 
 /**
  * 按钮组件属性接口
@@ -41,7 +41,7 @@ export interface ButtonProps
    * 当设置为 true 时，会渲染为子元素的类型（如链接）
    */
   asChild?: boolean
-}
+};
 
 /**
  * 按钮组件
@@ -64,10 +64,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       />
     )
   }
-)
-Button.displayName = "Button"
+);
+Button.displayName = "Button";
 
 /**
  * 导出 Button 组件
  */
-export { Button }
+export { Button };

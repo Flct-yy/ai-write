@@ -17,12 +17,12 @@
  * }
  * ```
  */
-import * as React from "react"
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
-import { Check } from "lucide-react"
+import * as React from "react";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { Check } from "lucide-react";
 
-import { cn } from "/@/utils/classnames"
-import { checkboxCheckIconVariants, checkboxIndicatorVariants, checkboxVariants } from "./variants/checkbox"
+import { cn } from "/@/utils/classnames";
+import { checkboxCheckIconVariants, checkboxIndicatorVariants, checkboxVariants } from "./variants/checkbox";
 
 /**
  * Checkbox 组件
@@ -51,9 +51,9 @@ const Checkbox = React.forwardRef<
       <Check className={cn(checkboxCheckIconVariants)} />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
-))
+));
 
 // 设置组件显示名称，用于 React DevTools 调试
-Checkbox.displayName = CheckboxPrimitive.Root.displayName
+Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
-export { Checkbox }
+export { Checkbox };

@@ -16,33 +16,33 @@
  * ```
  */
 
-import * as React from "react"
-import * as SelectPrimitive from "@radix-ui/react-select"
-import { Check, ChevronDown, ChevronUp } from "lucide-react"
+import * as React from "react";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
 
-import { cn } from "/@/utils/classnames"
-import { 
-  selectScrollDownButtonVariants, 
-  selectScrollUpButtonVariants, 
-  selectVariants, 
-  selectContentVariants, 
-  selectPopperOffsetVariants, 
-  selectViewportVariants, 
-  selectViewportOffsetVariants, 
-  selectLabelVariants, 
-  selectItemVariants, 
-  selectItemIndicatorVariants, 
-  selectSeparatorVariants 
-} from "./variants/select"
+import { cn } from "/@/utils/classnames";
+import {
+  selectScrollDownButtonVariants,
+  selectScrollUpButtonVariants,
+  selectVariants,
+  selectContentVariants,
+  selectPopperOffsetVariants,
+  selectViewportVariants,
+  selectViewportOffsetVariants,
+  selectLabelVariants,
+  selectItemVariants,
+  selectItemIndicatorVariants,
+  selectSeparatorVariants
+} from "./variants/select";
 
 // 根组件
-const Select = SelectPrimitive.Root
+const Select = SelectPrimitive.Root;
 
 // 用于对选项进行分组的组件
-const SelectGroup = SelectPrimitive.Group
+const SelectGroup = SelectPrimitive.Group;
 
 // 显示当前选中值的组件
-const SelectValue = SelectPrimitive.Value
+const SelectValue = SelectPrimitive.Value;
 
 /**
  * 触发下拉菜单的按钮组件
@@ -68,8 +68,8 @@ const SelectTrigger = React.forwardRef<
       <ChevronDown className="h-4 w-4 opacity-50" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
-))
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
+));
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 /**
  * 滚动到顶部的按钮组件
@@ -91,8 +91,8 @@ const SelectScrollUpButton = React.forwardRef<
   >
     <ChevronUp className="h-4 w-4" />
   </SelectPrimitive.ScrollUpButton>
-))
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
+));
+SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
 
 /**
  * 滚动到底部的按钮组件
@@ -114,9 +114,9 @@ const SelectScrollDownButton = React.forwardRef<
   >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
-))
+));
 SelectScrollDownButton.displayName =
-  SelectPrimitive.ScrollDownButton.displayName
+  SelectPrimitive.ScrollDownButton.displayName;
 
 /**
  * 下拉菜单内容容器组件
@@ -153,8 +153,8 @@ const SelectContent = React.forwardRef<
       <SelectScrollDownButton />
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
-))
-SelectContent.displayName = SelectPrimitive.Content.displayName
+));
+SelectContent.displayName = SelectPrimitive.Content.displayName;
 
 /**
  * 选项分组标签组件
@@ -171,8 +171,8 @@ const SelectLabel = React.forwardRef<
     className={cn(selectLabelVariants, className)}
     {...props}
   />
-))
-SelectLabel.displayName = SelectPrimitive.Label.displayName
+));
+SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 /**
  * 下拉菜单选项组件
@@ -201,8 +201,8 @@ const SelectItem = React.forwardRef<
 
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
-))
-SelectItem.displayName = SelectPrimitive.Item.displayName
+));
+SelectItem.displayName = SelectPrimitive.Item.displayName;
 
 /**
  * 选项分隔线组件
@@ -219,8 +219,8 @@ const SelectSeparator = React.forwardRef<
     className={cn(selectSeparatorVariants, className)}
     {...props}
   />
-))
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName
+));
+SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 /**
  * Select 组件导出
@@ -237,4 +237,4 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
-}
+};

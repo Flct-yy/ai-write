@@ -15,10 +15,10 @@
  * ```
  */
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "/@/utils/classnames"
-import { textareaVariants } from "./variants/textarea"
+import { cn } from "/@/utils/classnames";
+import { textareaVariants } from "./variants/textarea";
 
 /**
  * 多行文本输入框组件
@@ -39,10 +39,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttribu
       />
     )
   }
-)
-Textarea.displayName = "Textarea"
+);
+Textarea.displayName = "Textarea";
 
 /**
  * 导出 Textarea 组件
  */
-export { Textarea }
+export { Textarea };

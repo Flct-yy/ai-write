@@ -16,9 +16,9 @@
  * ```
  */
 
-import * as React from "react"
-import { cn } from "/@/utils/classnames"
-import { inputVariants } from "./variants/input"
+import * as React from "react";
+import { cn } from "/@/utils/classnames";
+import { inputVariants } from "./variants/input";
 
 /**
  * 输入框组件
@@ -41,10 +41,10 @@ const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLI
       />
     )
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = "Input";
 
 /**
  * 导出 Input 组件
  */
-export { Input }
+export { Input };
