@@ -21,6 +21,9 @@ import { Switch } from "/@/components/inputs/switch";
 import { Slider } from "/@/components/inputs/slider";
 import React, { useState } from "react";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "./components/inputs/input-otp";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./components/inputs/form";
+import { Label } from "./components/inputs/label";
+import { useForm } from "react-hook-form";
 
 function App() {
   const { theme, setTheme } = useTheme();
@@ -38,6 +41,22 @@ function App() {
       // 调用验证接口等逻辑
     }
   };
+
+  // 初始化表单
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+      remember: false
+    },
+    mode: "onChange"
+  })
+
+  // 处理表单提交
+  const onSubmit = (values) => {
+    console.log("表单提交:", values)
+    // 这里添加登录逻辑
+  }
   return (
     <div className="h-screen bg-background">
       <Login />
@@ -116,7 +135,91 @@ function App() {
       <div style={{ marginTop: "20px" }}>
         已输入: {otp || "请输入验证码"}
       </div>
-    </div>
+
+      <br />
+      <Label htmlFor="name"> 用户名:</Label>
+      <Input id="name" placeholder="请输入用户名" />
+
+      <br />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-md mx-auto p-4">
+          <FormField
+            control={form.control}
+            name="email"
+            rules={{
+              required: "邮箱不能为空",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "请输入有效的邮箱地址",
+              },
+            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>电子邮箱</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="请输入邮箱"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  我们不会分享你的邮箱给第三方
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            rules={{
+              required: "密码不能为空",
+              minLength: {
+                value: 6,
+                message: "密码至少需要6个字符",
+              },
+            }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>密码</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="请输入密码"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="remember"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel className="cursor-pointer">
+                  记住我
+                </FormLabel>
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" className="w-full">
+            登录
+          </Button>
+        </form>
+      </Form>
+    </div >
   );
 }
 
