@@ -17,6 +17,7 @@ import {
 import { Checkbox } from "/@/components/inputs/checkbox";
 import { useTheme } from "/@/hooks/use-theme";
 import { RadioGroup, RadioGroupItem } from "/@/components/inputs/radio-group";
+import { Switch } from "/@/components/inputs/switch";
 
 function App() {
   const { theme, setTheme } = useTheme();
@@ -59,6 +60,9 @@ function App() {
         <RadioGroupItem value="banana">Banana</RadioGroupItem>
         <RadioGroupItem value="orange">Orange</RadioGroupItem>
       </RadioGroup>
+      <br />
+      <Switch id="notifications" />
+      <label className="ml-2" htmlFor="notifications">启用通知</label>
     </div>
   );
 }
