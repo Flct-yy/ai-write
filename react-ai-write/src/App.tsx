@@ -30,6 +30,8 @@ import { ScrollArea, ScrollBar } from "/@/components/layout/scroll-area";
 import { Separator } from "/@/components/layout/separator";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/layout/resizable";
 import { AspectRatio } from "./components/layout/aspect-ratio";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "./components/navigation/breadcrumb";
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from "./components/navigation/navigation-menu";
 
 
 
@@ -292,6 +294,52 @@ function App() {
       <AspectRatio ratio={16 / 9} className="bg-gray-200 h-full">
         <img src="https://picsum.photos/1000/750" alt="示例图片" className="object-cover w-full h-full" />
       </AspectRatio>
+
+      <Separator className="my-4 border-b" />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">首页</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/products">产品</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>详情页</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>首页</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="grid gap-4 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                <div>
+                  <h3 className="font-medium">首页内容</h3>
+                  <p className="text-sm text-gray-500">欢迎访问我们的网站</p>
+                </div>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>产品</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="grid gap-4 p-4 md:w-[400px]">
+                <NavigationMenuLink href="/products">所有产品</NavigationMenuLink>
+                <NavigationMenuLink href="/products/new">新产品</NavigationMenuLink>
+                <NavigationMenuLink href="/products/popular">热门产品</NavigationMenuLink>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/about">关于我们</NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
     </div >
   );
 }
