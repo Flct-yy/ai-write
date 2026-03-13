@@ -24,6 +24,10 @@ import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "./comp
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./components/inputs/form";
 import { Label } from "./components/inputs/label";
 import { useForm } from "react-hook-form";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./components/layout/card";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./components/layout/accordion";
+
+
 
 function App() {
   const { theme, setTheme } = useTheme();
@@ -219,6 +223,36 @@ function App() {
           </Button>
         </form>
       </Form>
+      <br />
+      <Card>
+        <CardHeader>
+          <CardTitle>登录</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>登录后即可访问所有功能</p>
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" className="w-full">
+            登录
+          </Button>
+        </CardFooter>
+      </Card>
+      <br />
+
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>项目 1</AccordionTrigger>
+          <AccordionContent>
+            项目 1 的内容...
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>项目 2</AccordionTrigger>
+          <AccordionContent>
+            项目 2 的内容...
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div >
   );
 }
