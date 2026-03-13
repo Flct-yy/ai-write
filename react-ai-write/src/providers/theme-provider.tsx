@@ -15,7 +15,6 @@ type ThemeProviderProps = {
  * @param storageKey 主题存储键名
  * @param props 上下文提供程序的额外属性
  */
-export default ThemeProvider;
 export function ThemeProvider({
   children,
   defaultTheme = "system",
@@ -59,3 +58,5 @@ export function ThemeProvider({
     </ThemeProviderContext.Provider>
   );
 }
+
+export default ThemeProvider;
