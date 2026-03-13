@@ -26,6 +26,8 @@ import { Label } from "./components/inputs/label";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./components/layout/card";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./components/layout/accordion";
+import { ScrollArea, ScrollBar } from "/@/components/layout/scroll-area";
+import { Separator } from "/@/components/layout/separator";
 
 
 
@@ -253,6 +255,23 @@ function App() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
+      <br />
+      <ScrollArea className="h-48 w-48 border">
+        <div className="p-4">
+          <p>滚动区域内容...</p>
+          <p>更多内容...</p>
+          <p>更多内容...</p>
+          <p>更多内容...</p>
+          <p>更多内容...</p>
+          <p>更多内容...</p>
+          <p>更多内容...</p>
+          <p>更多内容...</p>
+          {/* 添加一个很长的行，超出水平宽度 */}
+          <p className="whitespace-nowrap">这是一个很长的文本，用于测试水平滚动条，这是一个很长的文本，用于测试水平滚动条</p>
+        </div>
+      </ScrollArea>
+      <Separator className="my-4 border-b" />
     </div >
   );
 }
