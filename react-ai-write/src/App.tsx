@@ -28,6 +28,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./componen
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./components/layout/accordion";
 import { ScrollArea, ScrollBar } from "/@/components/layout/scroll-area";
 import { Separator } from "/@/components/layout/separator";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/layout/resizable";
+import { AspectRatio } from "./components/layout/aspect-ratio";
 
 
 
@@ -272,6 +274,24 @@ function App() {
         </div>
       </ScrollArea>
       <Separator className="my-4 border-b" />
+
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={30}>
+          <div className="p-4 bg-gray-100 h-full">左侧面板</div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={40}>
+          <div className="p-4 bg-gray-200 h-full">中间面板</div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={30}>
+          <div className="p-4 bg-gray-300 h-full">右侧面板</div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+
+      <AspectRatio ratio={16 / 9} className="bg-gray-200 h-full">
+        <img src="https://picsum.photos/1000/750" alt="示例图片" className="object-cover w-full h-full" />
+      </AspectRatio>
     </div >
   );
 }
