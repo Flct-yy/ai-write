@@ -28,12 +28,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "/@/components/overlays/tooltip";
-import { sidebarMenuButtonVariants, type SidebarMenuButtonVariants } from "/@/components/layout/variants/sidebar";
-
+import { sidebarMenuButtonVariants, type SidebarMenuButtonVariants, sidebarVariants, type SidebarVariants } from "/@/components/layout/variants/sidebar";
 // 侧边栏相关常量
 const SIDEBAR_COOKIE_NAME = "sidebar:state"; // 存储侧边栏状态的 cookie 名称
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // cookie 过期时间（7天）
-const SIDEBAR_WIDTH = "16rem"; // 侧边栏宽度
+const SIDEBAR_WIDTH = "20rem"; // 侧边栏宽度
 const SIDEBAR_WIDTH_MOBILE = "18rem"; // 移动设备上的侧边栏宽度
 const SIDEBAR_WIDTH_ICON = "3rem"; // 仅显示图标的侧边栏宽度
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"; // 切换侧边栏的键盘快捷键
@@ -214,7 +213,7 @@ const Sidebar = React.forwardRef<
       return (
         <div
           className={cn(
-            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+            sidebarVariants({ variant }),
             className
           )}
           ref={ref}
@@ -232,7 +231,10 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            className={cn(
+              "w-[--sidebar-width] p-0 [&>button]:hidden",
+              sidebarVariants({ variant })
+            )}
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -283,7 +285,10 @@ const Sidebar = React.forwardRef<
         >
           <div
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow"
+            className={cn(
+              "flex h-full w-full flex-col",
+              sidebarVariants({ variant })
+            )}
           >
             {children}
           </div>

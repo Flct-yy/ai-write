@@ -52,6 +52,8 @@ import { useLocale } from "../hooks/use-locale";
 // 导入语言枚举
 import { Locale } from "../i18n/locale";
 
+import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, SidebarTrigger } from "/@/components/layout/sidebar";
+
 /**
  * 聊天侧边栏属性接口
  */
@@ -140,7 +142,7 @@ export const ChatSidebar = ({
 
   return (
     <>
-      {/* 移动端背景遮罩 */}
+      {/* 侧边栏遮罩层，点击关闭侧边栏 */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-40 lg:hidden"
@@ -148,26 +150,15 @@ export const ChatSidebar = ({
         />
       )}
 
-      {/* 侧边栏容器 */}
-      <div
-        className={cn(
-          "fixed lg:static inset-y-0 left-0 z-50 w-80 bg-background border-r flex flex-col transform transition-transform duration-300 ease-in-out",
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        )}
-      >
-        {/* 侧边栏头部 */}
+      {/* 侧边栏头部 */}
+      <SidebarHeader>
         <div className="p-4 border-b flex justify-between items-center">
           <h2 className="text-lg font-semibold">{t('writing_sessions')}</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="lg:hidden h-8 w-8"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </div>
+      </SidebarHeader>
 
+
+      <SidebarContent>
         {/* 频道列表 */}
         <ScrollArea className="flex-1">
           <div className="p-4 space-y-0">
@@ -216,7 +207,9 @@ export const ChatSidebar = ({
             />
           </div>
         </ScrollArea>
+      </SidebarContent>
 
+      <SidebarFooter>
         {/* 新建聊天按钮 */}
         <div className="p-2 border-t">
           <Button onClick={onNewChat} className="w-full justify-start">
@@ -283,7 +276,7 @@ export const ChatSidebar = ({
             </Button>
           </div>
         </div>
-      </div>
+      </SidebarFooter>
     </>
   );
 };
