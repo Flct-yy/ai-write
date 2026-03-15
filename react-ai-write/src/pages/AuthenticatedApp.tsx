@@ -1,12 +1,18 @@
+
+import { ChatProvider } from "/@/providers/chat-provider";
+// import AuthenticatedCore from "./AuthenticatedCore";
 import { User } from "stream-chat";
 
-const AuthenticatedApp = ({ user, onLogout }: { user: User; onLogout: () => void }) => {
-  return (
-    <div>
-      <h1>Hello, {user.name}! </h1>
-      <button onClick={onLogout}> Logout </button>
-    </div>
-  )
-};
+interface AuthenticatedAppProps {
+  user: User;
+  onLogout: () => void;
+}
 
-export default AuthenticatedApp;
+const AuthenticatedApp = ({ user, onLogout }: AuthenticatedAppProps) => (
+  <ChatProvider user={user}>
+    {/* <AuthenticatedCore user={user} onLogout={onLogout} /> */}
+    Hello! {user.name}
+  </ChatProvider>
+);
+
+export default AuthenticatedApp

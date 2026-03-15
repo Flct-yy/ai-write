@@ -7,7 +7,7 @@
 // 导入SHA-256哈希函数，用于生成用户ID
 import { sha256 } from "js-sha256";
 // 导入React和useState钩子
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 // 导入useForm钩子
 import { useForm } from "react-hook-form";
 // 导入User类型
@@ -81,7 +81,7 @@ const Login = ({ onLogin }: LoginProps) => {
   const { locale, setLocale, t } = useLocale();
   // 主题状态管理
   const { theme, setTheme } = useTheme();
-  
+
   // 初始化表单
   const form = useForm<LoginFormData>({
     defaultValues: {
@@ -89,12 +89,14 @@ const Login = ({ onLogin }: LoginProps) => {
     },
     mode: "onChange",
   });
-  
+
+
   // 当语言变化时，重新验证表单
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // 首次加载时不执行，只在语言变化时执行
     form.trigger();
   }, [locale, form]);
-  
+
   /**
    * 切换主题
    */
@@ -128,13 +130,13 @@ const Login = ({ onLogin }: LoginProps) => {
               <Bot className="h-10 w-10" />
               <h1 className="text-3xl font-bold">{t('ai_assistant')}</h1>
             </div>
-            
+
             {/* 品牌描述 */}
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold">{t('welcome')}</h2>
               <p className="text-white/80">{t('enter_username')}</p>
             </div>
-            
+
             {/* 功能图标 */}
             <div className="grid grid-cols-3 gap-6 mt-8">
               <div className="flex flex-col items-center text-center space-y-2">
@@ -162,7 +164,7 @@ const Login = ({ onLogin }: LoginProps) => {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => setLocale(locale === Locale.Chinese ? Locale.English : Locale.Chinese)}
+                onClick={() => { setLocale(locale === Locale.Chinese ? Locale.English : Locale.Chinese) }}
               >
                 {locale === Locale.Chinese ? 'En' : '中'}
               </Button>
@@ -175,7 +177,7 @@ const Login = ({ onLogin }: LoginProps) => {
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
             </div>
-            
+
             {/* 登录卡片 */}
             <Card className="shadow-lg">
               {/* 卡片头部 */}
@@ -193,7 +195,7 @@ const Login = ({ onLogin }: LoginProps) => {
                   {t('enter_username')}
                 </CardDescription>
               </CardHeader>
-              
+
               {/* 卡片内容 */}
               <CardContent>
                 {/* 登录表单 */}
@@ -217,6 +219,7 @@ const Login = ({ onLogin }: LoginProps) => {
                               id="username"
                               placeholder={t('enter_name')}
                               {...field}
+                              onChange={(e) => field.onChange(e.target.value.trim())}
                               className="h-10"
                             />
                           </FormControl>
@@ -224,21 +227,17 @@ const Login = ({ onLogin }: LoginProps) => {
                         </FormItem>
                       )}
                     />
+                    {/* 登录按钮 */}
+                    <Button
+                      type="submit"
+                      className="w-full h-10"
+                      disabled={!form.formState.isValid}
+                    >
+                      {t('start_chatting')}
+                    </Button>
                   </form>
                 </Form>
               </CardContent>
-              
-              {/* 卡片底部 */}
-              <CardFooter>
-                {/* 登录按钮 */}
-                <Button
-                  type="submit"
-                  className="w-full h-10"
-                  disabled={!form.formState.isValid}
-                >
-                  {t('start_chatting')}
-                </Button>
-              </CardFooter>
             </Card>
           </div>
         </div>
