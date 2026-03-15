@@ -18,12 +18,12 @@ export const carouselVariants = {
   button: {
     base: "absolute h-8 w-8 rounded-full",
     horizontal: {
-      previous: "-left-12 top-1/2 -translate-y-1/2",
-      next: "-right-12 top-1/2 -translate-y-1/2"
+      previous: "left-4 top-1/2 -translate-y-1/2",
+      next: "right-4 top-1/2 -translate-y-1/2"
     },
     vertical: {
-      previous: "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-      next: "-bottom-12 left-1/2 -translate-x-1/2 rotate-90"
+      previous: "top-4 left-1/2 -translate-x-1/2 rotate-90",
+      next: "bottom-4 left-1/2 -translate-x-1/2 rotate-90"
     }
   }
 };
