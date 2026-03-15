@@ -34,7 +34,7 @@ import { useChatContext } from "stream-chat-react";
 import { v4 as uuidv4 } from "uuid";
 
 // 导入聊天组件（暂时注释，文件不存在）
-import { ChatInterface } from "./ChatInterface";
+import ChatInterface from "./ChatInterface";
 
 // 导入侧边栏组件
 import {
@@ -250,6 +250,30 @@ const AuthenticatedCore = ({ user, onLogout }: AuthenticatedCoreProps) => {
             backendUrl={backendUrl}
           />
         </SidebarInset>
+
+        {/* 删除写作会话确认对话框 */}
+        {/* <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Writing Session</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this writing session? This action
+              cannot be undone and all content will be permanently deleted.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDeleteCancel}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              Delete Session
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog> */}
       </div>
     </SidebarProvider>
   );
