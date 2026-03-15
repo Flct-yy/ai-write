@@ -8,6 +8,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "/@/components/overlays/alert-dialog";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "/@/components/overlays/hover-card";
 import { Popover, PopoverContent, PopoverTrigger } from "/@/components/overlays/popover";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "/@/components/overlays/drawer";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "/@/components/overlays/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "/@/components/overlays/tooltip";
 
 
 
@@ -193,6 +196,82 @@ function App() {
             </div>
           </PopoverContent>
         </Popover>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">抽屉测试</h2>
+        <Drawer>
+          <DrawerTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+            打开抽屉
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>抽屉标题</DrawerTitle>
+              <DrawerDescription>
+                这是一个抽屉测试，从底部滑出。
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="p-4">
+              <p>抽屉内容区域，可以放置任何需要的内容。</p>
+              <p className="mt-2">例如表单、列表等。</p>
+            </div>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors">
+                  取消
+                </button>
+              </DrawerClose>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+                确认
+              </button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">侧边栏测试</h2>
+        <Sheet>
+          <SheetTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+            打开侧边栏
+          </SheetTrigger>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>侧边栏标题</SheetTitle>
+              <SheetDescription>
+                这是一个侧边栏测试，从右侧滑出。
+              </SheetDescription>
+            </SheetHeader>
+            <div className="p-4">
+              <p>侧边栏内容区域，可以放置任何需要的内容。</p>
+              <p className="mt-2">例如导航菜单、设置选项等。</p>
+            </div>
+            <SheetFooter>
+              <SheetClose asChild>
+                <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors">
+                  取消
+                </button>
+              </SheetClose>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+                确认
+              </button>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">工具提示测试</h2>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+              悬停我查看工具提示
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>这是一个工具提示测试</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </div>
   );
