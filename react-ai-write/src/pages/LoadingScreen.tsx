@@ -1,7 +1,8 @@
 import { Bot, Loader2 } from "lucide-react";
 import { useLocale } from "/@/hooks/use-locale";
+import { Button } from "/@/components/inputs/button";
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ isError }: { isError: boolean }) => {
   const { locale, setLocale, t } = useLocale();
 
   return (
@@ -18,6 +19,11 @@ const LoadingScreen = () => {
             </p>
           </div>
         </div>
+        {isError && (
+          <Button onClick={() => window.location.reload()}>
+            {t('reload')}
+          </Button>
+        )}
       </div>
     </div>
   );

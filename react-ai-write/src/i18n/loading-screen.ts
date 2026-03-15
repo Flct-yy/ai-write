@@ -6,4 +6,8 @@ export const loadingScreenTranslations: Translations = {
     [Locale.Chinese]: '设置中，请稍后...',
     [Locale.English]: 'Setting up your AI assistant...'
   },
+  'reload': {
+    [Locale.Chinese]: '重新加载',
+    [Locale.English]: 'Reload'
+  },
 }

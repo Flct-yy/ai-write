@@ -1,6 +1,6 @@
 
 import { ChatProvider } from "/@/providers/chat-provider";
-// import AuthenticatedCore from "./AuthenticatedCore";
+import AuthenticatedCore from "./AuthenticatedCore";
 import { User } from "stream-chat";
 
 interface AuthenticatedAppProps {
@@ -10,8 +10,7 @@ interface AuthenticatedAppProps {
 
 const AuthenticatedApp = ({ user, onLogout }: AuthenticatedAppProps) => (
   <ChatProvider user={user}>
-    {/* <AuthenticatedCore user={user} onLogout={onLogout} /> */}
-    Hello! {user.name}
+    <AuthenticatedCore user={user} onLogout={onLogout} />
   </ChatProvider>
 );
 

@@ -1,6 +1,7 @@
 import { Locale } from "./locale";
 import { loginTranslations } from "./login";
 import { loadingScreenTranslations } from "./loading-screen";
+import { chatSidebarTranslations } from "./chat-sidebar";
 
 // 支持的语言类型
 export { Locale };
@@ -23,5 +24,6 @@ export const translations: Translations = {
     [Locale.English]: 'English'
   },
   ...loginTranslations,
-  ...loadingScreenTranslations
+  ...loadingScreenTranslations,
+  ...chatSidebarTranslations
 };

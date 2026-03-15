@@ -4,11 +4,19 @@
  * 为应用提供 Stream Chat 功能，管理聊天客户端的创建和认证
  */
 
-import { ReactNode, useCallback } from "react";
-import { User } from "stream-chat";
+import { ReactNode, useCallback, useState, useEffect } from "react";
+import { User, Event } from "stream-chat";
 import { Chat, useCreateChatClient } from "stream-chat-react";
-import LoadingScreen from "/@/pages/loading-screen";
+import LoadingScreen from "/@/pages/LoadingScreen";
 import { useTheme } from "/@/hooks/use-theme";
+import { useToast } from "/@/hooks/use-toast";
+
+/**
+ * 错误事件类型
+ */
+interface ErrorEvent extends Event {
+  error: Error;
+}
 
 /**
  * ChatProvider 组件属性
@@ -42,6 +50,10 @@ if (!apiKey) {
 export const ChatProvider = ({ user, children }: ChatProviderProps) => {
   // 获取当前主题
   const { theme } = useTheme();
+  // 使用提示框钩子
+  const { toast } = useToast();
+  // 错误状态
+  const [error, setError] = useState<string | null>(null);
 
   /**
    * 令牌提供者函数，从后端获取认证令牌
@@ -53,7 +65,14 @@ export const ChatProvider = ({ user, children }: ChatProviderProps) => {
    */
   const tokenProvider = useCallback(async () => {
     if (!user) {
-      throw new Error("用户信息不可用");
+      const errorMsg = "用户信息不可用";
+      setError(errorMsg);
+      toast({
+        title: "认证错误",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      throw new Error(errorMsg);
     }
 
     try {
@@ -69,17 +88,33 @@ export const ChatProvider = ({ user, children }: ChatProviderProps) => {
       // 检查响应是否成功
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`获取令牌失败: ${errorText}`);
+        const errorMsg = `获取令牌失败: ${errorText}`;
+        setError(errorMsg);
+        toast({
+          title: "认证错误",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        throw new Error(errorMsg);
       }
 
       // 解析响应并返回令牌
       const { token } = await response.json();
+      // 清除错误状态
+      setError(null);
       return token;
     } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "获取令牌时出错";
+      setError(errorMsg);
+      toast({
+        title: "认证错误",
+        description: errorMsg,
+        variant: "destructive",
+      });
       console.error("获取令牌时出错:", err);
       throw err;
     }
-  }, [user]);
+  }, [user, toast]);
 
   /**
    * 创建 Stream Chat 客户端，自动管理令牌
@@ -96,9 +131,62 @@ export const ChatProvider = ({ user, children }: ChatProviderProps) => {
     userData: user,
   });
 
+  // 监听客户端错误事件
+  useEffect(() => {
+    if (client) {
+      // 监听连接错误
+      const handleConnectionError = (event: ErrorEvent) => {
+        const errorMsg = `连接错误: ${event.error?.message || '未知错误'}`;
+        setError(errorMsg);
+        toast({
+          title: "连接错误",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        console.error("Chat client connection error:", event);
+      };
+
+      // 监听一般错误
+      const handleError = (event: ErrorEvent) => {
+        const errorMsg = `聊天错误: ${event.error?.message || '未知错误'}`;
+        setError(errorMsg);
+        toast({
+          title: "聊天错误",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        console.error("Chat client error:", event);
+      };
+
+      // 监听令牌错误
+      const handleTokenError = () => {
+        const errorMsg = "令牌无效或已过期";
+        setError(errorMsg);
+        toast({
+          title: "认证错误",
+          description: errorMsg,
+          variant: "destructive",
+        });
+        console.error("Chat client token error");
+      };
+
+      // 添加事件监听器
+      client.on("connection.error", handleConnectionError);
+      client.on("error", handleError);
+      client.on("token.expired", handleTokenError);
+
+      // 清理事件监听器
+      return () => {
+        client.off("connection.error", handleConnectionError);
+        client.off("error", handleError);
+        client.off("token.expired", handleTokenError);
+      };
+    }
+  }, [client, toast]);
+
   // 客户端初始化时显示加载屏幕
   if (!client) {
-    return <LoadingScreen />;
+    return <LoadingScreen isError={error !== null} />;
   }
 
   return (
