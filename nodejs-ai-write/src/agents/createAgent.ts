@@ -1,7 +1,7 @@
 import { StreamChat } from "stream-chat";
-import { apiKey, serverClient } from "@/serverClient";
-import { OpenAIAgent } from "@/agents/openai/OpenAIAgent";
-import { AgentPlatform, AIAgent } from "@/agents/types";
+import { apiKey, serverClient } from "../serverClient";
+import { OpenAIAgent } from "./openai/OpenAIAgent";
+import { AgentPlatform, AIAgent } from "./types";
 
 // 创建智能体函数
 export const createAgent = async (

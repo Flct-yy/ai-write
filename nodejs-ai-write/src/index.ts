@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import "dotenv/config";
-import { apiKey, serverClient } from "@/serverClient";
-import { createAgent } from "@/agents/createAgent";
-import { AgentPlatform, AIAgent } from "@/agents/types";
+import { apiKey, serverClient } from "./serverClient";
+import { createAgent } from "./agents/createAgent";
+import { AgentPlatform, AIAgent } from "./agents/types";
 
 // 初始化 Express 应用
 const app = express();
