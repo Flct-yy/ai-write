@@ -11,6 +11,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "/@/components/overlays/
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "/@/components/overlays/drawer";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "/@/components/overlays/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "/@/components/overlays/tooltip";
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from "/@/components/interaction/command";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from "/@/components/interaction/context-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "/@/components/interaction/dropdown-menu";
 
 
 
@@ -272,6 +275,109 @@ function App() {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">命令面板测试</h2>
+        <CommandDialog>
+          <DialogTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+            打开命令面板 (Ctrl+K)
+          </DialogTrigger>
+          <DialogContent className="overflow-hidden p-0 shadow-lg">
+            <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+              <CommandInput placeholder="搜索命令..." />
+              <CommandList>
+                <CommandEmpty>未找到匹配的命令</CommandEmpty>
+                <CommandGroup heading="常用命令">
+                  <CommandItem>
+                    新建文件
+                    <CommandShortcut>Ctrl+N</CommandShortcut>
+                  </CommandItem>
+                  <CommandItem>
+                    打开文件
+                    <CommandShortcut>Ctrl+O</CommandShortcut>
+                  </CommandItem>
+                  <CommandItem>
+                    保存文件
+                    <CommandShortcut>Ctrl+S</CommandShortcut>
+                  </CommandItem>
+                </CommandGroup>
+                <CommandGroup heading="编辑命令">
+                  <CommandItem>
+                    剪切
+                    <CommandShortcut>Ctrl+X</CommandShortcut>
+                  </CommandItem>
+                  <CommandItem>
+                    复制
+                    <CommandShortcut>Ctrl+C</CommandShortcut>
+                  </CommandItem>
+                  <CommandItem>
+                    粘贴
+                    <CommandShortcut>Ctrl+V</CommandShortcut>
+                  </CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </DialogContent>
+        </CommandDialog>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">上下文菜单测试</h2>
+        <ContextMenu>
+          <ContextMenuTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+            右键点击我查看上下文菜单
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem>
+              新建文件
+              <ContextMenuShortcut>Ctrl+N</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem>
+              打开文件
+              <ContextMenuShortcut>Ctrl+O</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem>
+              保存文件
+              <ContextMenuShortcut>Ctrl+S</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem>
+              退出
+              <ContextMenuShortcut>Alt+F4</ContextMenuShortcut>
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">下拉菜单测试</h2>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+            点击打开下拉菜单
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              新建文件
+              <DropdownMenuShortcut>Ctrl+N</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              打开文件
+              <DropdownMenuShortcut>Ctrl+O</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              保存文件
+              <DropdownMenuShortcut>Ctrl+S</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              退出
+              <DropdownMenuShortcut>Alt+F4</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
