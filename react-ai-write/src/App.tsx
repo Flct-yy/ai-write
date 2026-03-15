@@ -6,6 +6,8 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "/@/components/navigation/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "/@/components/overlays/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "/@/components/overlays/alert-dialog";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "/@/components/overlays/hover-card";
+import { Popover, PopoverContent, PopoverTrigger } from "/@/components/overlays/popover";
 
 
 
@@ -156,6 +158,41 @@ function App() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">悬停卡片测试</h2>
+        <HoverCard>
+          <HoverCardTrigger className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
+            悬停我查看详情
+          </HoverCardTrigger>
+          <HoverCardContent >
+            <h3 className="font-medium">悬停卡片标题</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              这是一个悬停卡片测试，当鼠标悬停在触发器上时会显示此内容。
+            </p>
+          </HoverCardContent>
+        </HoverCard>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">弹出框测试</h2>
+        <Popover>
+          <PopoverTrigger className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors">
+            点击打开弹出框
+          </PopoverTrigger>
+          <PopoverContent>
+            <h3 className="font-medium">弹出框标题</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              这是一个弹出框测试，点击触发器后会显示此内容。
+            </p>
+            <div className="mt-4">
+              <button className="px-3 py-1 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm">
+                确认
+              </button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
