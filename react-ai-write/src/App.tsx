@@ -14,6 +14,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "/@/com
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from "/@/components/interaction/command";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from "/@/components/interaction/context-menu";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "/@/components/interaction/dropdown-menu";
+import { Toggle } from "/@/components/interaction/toggle";
+import { ToggleGroup, ToggleGroupItem } from "/@/components/interaction/toggle-group";
 
 
 
@@ -378,6 +380,39 @@ function App() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">切换按钮测试</h2>
+        <div className="flex gap-4">
+          <Toggle variant="default" size="default">
+            默认切换按钮
+          </Toggle>
+          <Toggle variant="outline" size="default">
+            轮廓切换按钮
+          </Toggle>
+          <Toggle variant="default" size="sm">
+            小尺寸
+          </Toggle>
+          <Toggle variant="default" size="lg">
+            大尺寸
+          </Toggle>
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">切换按钮组测试</h2>
+        <ToggleGroup type="single" defaultValue="left">
+          <ToggleGroupItem value="left">
+            左对齐
+          </ToggleGroupItem>
+          <ToggleGroupItem value="center">
+            居中
+          </ToggleGroupItem>
+          <ToggleGroupItem value="right">
+            右对齐
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
     </div>
   );
