@@ -1,3 +1,219 @@
+/**
+ * 全局样式文件
+ * 
+ * 包含以下内容：
+ * - Tailwind CSS 基础样式
+ * - Stream Chat 组件样式
+ * - 自定义 CSS 变量和主题
+ * - 全局样式重置和增强
+ * - 聊天应用特定样式
+ */
+
+/* 导入 Tailwind CSS 基础样式 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 导入 Stream Chat 组件样式 */
+@import "stream-chat-react/dist/css/v2/index.css";
+
+/* 基础样式层 */
+@layer base {
+  /* 禁用 HTML 垂直滚动 */
+  html {
+    overflow-y: hidden;
+  }
+
+  /* 浅色主题变量 */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 262 80% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 262 80% 60%;
+    --radius: 0.75rem;
+  }
+
+  /* 深色主题变量 */
+  .dark {
+    --background: 220 13% 9%;
+    --foreground: 210 20% 95%;
+    --card: 220 15% 12%;
+    --card-foreground: 210 20% 95%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 262 80% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 15% 16%;
+    --secondary-foreground: 210 20% 90%;
+    --muted: 220 15% 16%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 220 15% 18%;
+    --accent-foreground: 210 20% 95%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 15% 20%;
+    --input: 220 15% 18%;
+    --ring: 262 80% 60%;
+  }
+}
+
+/* 基础样式层 - 全局样式 */
+@layer base {
+  /* 为所有元素添加边框颜色 */
+  * {
+    @apply border-border;
+  }
+
+  /* 为 body 添加基础样式 */
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 全局禁用弹性滚动效果 */
+  html,
+  body {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 为所有可滚动元素禁用弹性滚动 */
+  * {
+    overscroll-behavior: none;
+  }
+
+  /* 平滑滚动 */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* 改进焦点样式 */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* 选中文本样式 */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* 用户消息的选中文本样式 - 使用对比色 */
+  .str-chat__message-bubble--me ::selection {
+    background-color: hsl(var(--background) / 0.8);
+    color: hsl(var(--foreground));
+  }
+
+  /* Stream Chat 浅色主题变量 */
+  .str-chat__theme-light {
+    --str-chat__primary-color: hsl(var(--primary));
+    --str-chat__primary-color-alpha-15: hsl(var(--primary) / 0.15);
+    --str-chat__active-primary-color: hsl(var(--primary));
+    --str-chat__surface-color: hsl(var(--background));
+    --str-chat__secondary-surface-color: hsl(var(--card));
+    --str-chat__tertiary-surface-color: hsl(var(--muted));
+    --str-chat__primary-surface-color: hsl(var(--primary) / 0.1);
+    --str-chat__primary-surface-color-low-emphasis: hsl(var(--primary) / 0.05);
+    --str-chat__border-radius-circle: 9999px;
+    --str-chat__border-radius-strong: calc(var(--radius) - 2px);
+    --str-chat__border-color: hsl(var(--border));
+    --str-chat__text-color: hsl(var(--foreground));
+    --str-chat__text-color-low-emphasis: hsl(var(--muted-foreground));
+    --str-chat__own-message-bubble-background: hsl(var(--primary));
+    --str-chat__own-message-bubble-color: hsl(var(--primary-foreground));
+    --str-chat__message-bubble-background: hsl(var(--muted));
+    --str-chat__message-bubble-color: hsl(var(--foreground));
+    --str-chat__input-background-color: hsl(var(--input));
+    --str-chat__avatar-background-color: hsl(var(--secondary));
+    --str-chat__avatar-text-color: hsl(var(--secondary-foreground));
+  }
+
+  /* Stream Chat 深色主题变量 */
+  .str-chat__theme-dark {
+    --str-chat__primary-color: hsl(var(--primary));
+    --str-chat__primary-color-alpha-15: hsl(var(--primary) / 0.15);
+    --str-chat__active-primary-color: hsl(var(--primary));
+    --str-chat__surface-color: hsl(var(--background));
+    --str-chat__secondary-surface-color: hsl(var(--card));
+    --str-chat__tertiary-surface-color: hsl(var(--muted));
+    --str-chat__primary-surface-color: hsl(var(--primary) / 0.2);
+    --str-chat__primary-surface-color-low-emphasis: hsl(var(--primary) / 0.1);
+    --str-chat__border-radius-circle: 9999px;
+    --str-chat__border-radius-strong: calc(var(--radius) - 2px);
+    --str-chat__border-color: hsl(var(--border));
+    --str-chat__text-color: hsl(var(--foreground));
+    --str-chat__text-color-low-emphasis: hsl(var(--muted-foreground));
+    --str-chat__own-message-bubble-background: hsl(var(--primary));
+    --str-chat__own-message-bubble-color: hsl(var(--primary-foreground));
+    --str-chat__message-bubble-background: hsl(var(--muted));
+    --str-chat__message-bubble-color: hsl(var(--foreground));
+    --str-chat__input-background-color: hsl(var(--input));
+    --str-chat__avatar-background-color: hsl(var(--secondary));
+    --str-chat__avatar-text-color: hsl(var(--secondary-foreground));
+  }
+
+  /* 聊天应用特定样式 */
+  /* 这些现在由 Stream 主题处理，但我们可以保留它们用于覆盖 */
+  
+  /* 输入指示器动画 */
+  @keyframes typing-bounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+    }
+
+    30% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* 输入指示器点样式 */
+  .typing-dot {
+    animation: typing-bounce 1.4s infinite;
+  }
+
+  /* 输入指示器点的动画延迟 */
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  /* Stream 消息气泡样式 */
+  .str-chat__message-bubble {
+    background: var(--str-chat__message-bubble-background);
+    color: var(--str-chat__message-bubble-color);
+    border: 1px solid var(--str-chat__border-color);
+  }
+
+  /* 自己的消息气泡样式 */
+  .str-chat__message-bubble--me {
+    background: var(--str-chat__own-message-bubble-background);
+    color: var(--str-chat__own-message-bubble-color);
+  }
+
+  /* 深色主题下的频道列表背景 */
+  .str-chat__theme-dark .str-chat__channel-list-messenger {
+    background-color: hsl(var(--background));
+  }
+}
