@@ -23,6 +23,9 @@ import { Progress } from "/@/components/display/progress";
 import { Skeleton } from "/@/components/display/skeleton";
 import { Toaster } from "/@/components/display/toaster";
 import { useToast } from "/@/hooks/use-toast";
+import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "/@/components/data/table";
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "/@/components/data/chart";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 
 
 
@@ -506,6 +509,96 @@ function App() {
           >
             显示错误提示
           </button>
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">表格测试</h2>
+        <Table>
+          <TableCaption>用户数据表格</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>姓名</TableHead>
+              <TableHead>邮箱</TableHead>
+              <TableHead>状态</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>1</TableCell>
+              <TableCell>张三</TableCell>
+              <TableCell>zhangsan@example.com</TableCell>
+              <TableCell>活跃</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>2</TableCell>
+              <TableCell>李四</TableCell>
+              <TableCell>lisi@example.com</TableCell>
+              <TableCell>活跃</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>3</TableCell>
+              <TableCell>王五</TableCell>
+              <TableCell>wangwu@example.com</TableCell>
+              <TableCell>非活跃</TableCell>
+            </TableRow>
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={4}>总计 3 条记录</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">图表测试</h2>
+        <div className="grid grid-cols-1 gap-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">折线图</h3>
+            <ChartContainer config={{}}>
+              <LineChart
+                data={[
+                  { name: '1月', value: 400 },
+                  { name: '2月', value: 300 },
+                  { name: '3月', value: 500 },
+                  { name: '4月', value: 200 },
+                  { name: '5月', value: 600 },
+                  { name: '6月', value: 400 },
+                ]}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+              </LineChart>
+            </ChartContainer>
+          </div>
+          <div>
+            <h3 className="text-lg font-medium mb-4">柱状图</h3>
+            <ChartContainer config={{}}>
+              <BarChart
+                data={[
+                  { name: '1月', value: 400 },
+                  { name: '2月', value: 300 },
+                  { name: '3月', value: 500 },
+                  { name: '4月', value: 200 },
+                  { name: '5月', value: 600 },
+                  { name: '6月', value: 400 },
+                ]}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="value" fill="#82ca9d" />
+              </BarChart>
+            </ChartContainer>
+          </div>
         </div>
       </div>
 
