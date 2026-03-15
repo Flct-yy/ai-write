@@ -16,11 +16,19 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator,
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "/@/components/interaction/dropdown-menu";
 import { Toggle } from "/@/components/interaction/toggle";
 import { ToggleGroup, ToggleGroupItem } from "/@/components/interaction/toggle-group";
+import { Alert, AlertTitle, AlertDescription } from "/@/components/display/alert";
+import { Avatar, AvatarImage, AvatarFallback } from "/@/components/display/avatar";
+import { Badge } from "/@/components/display/badge";
+import { Progress } from "/@/components/display/progress";
+import { Skeleton } from "/@/components/display/skeleton";
+import { Toaster } from "/@/components/display/toaster";
+import { useToast } from "/@/hooks/use-toast";
 
 
 
 function App() {
   const { theme, setTheme } = useTheme();
+  const { toast } = useToast();
 
   return (
     <div className="h-screen bg-background">
@@ -414,6 +422,94 @@ function App() {
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">警告框测试</h2>
+        <div className="flex flex-col gap-4">
+          <Alert>
+            <AlertTitle>信息提示</AlertTitle>
+            <AlertDescription>
+              这是一个默认的警告框，用于显示一般信息。
+            </AlertDescription>
+          </Alert>
+          <Alert variant="destructive">
+            <AlertTitle>错误提示</AlertTitle>
+            <AlertDescription>
+              这是一个破坏性的警告框，用于显示错误信息。
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">头像测试</h2>
+        <div className="flex gap-4">
+          <Avatar>
+            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=JohnDoe" alt="用户头像" />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
+          <Avatar className="h-16 w-16">
+            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=SarahBrown" alt="用户头像" />
+            <AvatarFallback>SB</AvatarFallback>
+          </Avatar>
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">徽章测试</h2>
+        <div className="flex gap-4">
+          <Badge variant="default">默认徽章</Badge>
+          <Badge variant="secondary">次要徽章</Badge>
+          <Badge variant="destructive">危险徽章</Badge>
+          <Badge variant="outline">轮廓徽章</Badge>
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">进度条测试</h2>
+        <div className="flex flex-col gap-4">
+          <Progress className="bg-gray-200 h-2" value={30} />
+          <Progress className="bg-gray-200 h-2" value={60} />
+          <Progress className="bg-gray-200 h-2" value={90} />
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">骨架屏测试</h2>
+        <div className="flex flex-col gap-4">
+          <Skeleton className="bg-gray-200 h-12 w-full" />
+          <Skeleton className="bg-gray-200 h-8 w-3/4" />
+          <Skeleton className="bg-gray-200 h-4 w-1/2" />
+        </div>
+      </div>
+
+      <div className="mt-8 px-4">
+        <h2 className="text-xl font-semibold mb-4">提示框测试</h2>
+        <div className="flex gap-4">
+          <button 
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            onClick={() => toast({
+              title: "成功",
+              description: "操作已成功完成",
+              variant: "default"
+            })}
+          >
+            显示成功提示
+          </button>
+          <button 
+            className="px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 transition-colors"
+            onClick={() => toast({
+              title: "错误",
+              description: "操作失败，请重试",
+              variant: "destructive"
+            })}
+          >
+            显示错误提示
+          </button>
+        </div>
+      </div>
+
+      <Toaster />
     </div>
   );
 }
