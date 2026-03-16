@@ -2,7 +2,7 @@
  * 聊天侧边栏组件
  * 显示用户的写作会话列表，提供新建会话、切换主题和登出功能
  */
-
+import { useState } from "react";
 // 导入头像组件
 import { Avatar, AvatarFallback, AvatarImage } from "/@/components/display/avatar";
 
@@ -17,6 +17,18 @@ import {
   DropdownMenuTrigger,
 } from "/@/components/interaction/dropdown-menu";
 
+// 导入对话框组件
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "/@/components/overlays/dialog";
+
+// 导入输入框组件
+import { Input } from "/@/components/inputs/input";
+
 // 导入滚动区域组件
 import { ScrollArea } from "/@/components/layout/scroll-area";
 
@@ -30,6 +42,7 @@ import {
   MessageSquare,
   Moon,
   PlusCircle,
+  Settings,
   Sun,
   Trash2,
   X,
@@ -126,8 +139,32 @@ export const ChatSidebar = ({
   const navigate = useNavigate();
   const { channelId } = useParams<{ channelId: string }>();
 
+  // API Key设置状态
+  const [openSettings, setOpenSettings] = useState(false);
+  const [apiKeys, setApiKeys] = useState({
+    openai: localStorage.getItem('openai_api_key') || '',
+    volcengine: localStorage.getItem('volcengine_api_key') || '',
+    zhipu: localStorage.getItem('zhipu_api_key') || '',
+  });
+
   // 如果用户不存在，返回null
   if (!user) return null;
+
+  // 处理API Key保存
+  const handleSaveApiKeys = () => {
+    localStorage.setItem('openai_api_key', apiKeys.openai);
+    localStorage.setItem('volcengine_api_key', apiKeys.volcengine);
+    localStorage.setItem('zhipu_api_key', apiKeys.zhipu);
+    setOpenSettings(false);
+  };
+
+  // 处理API Key输入变化
+  const handleApiKeyChange = (platform: 'openai' | 'volcengine' | 'zhipu', value: string) => {
+    setApiKeys(prev => ({
+      ...prev,
+      [platform]: value
+    }));
+  };
 
   // 频道过滤器：只显示当前用户参与的消息频道
   const filters: ChannelFilters = {
@@ -226,21 +263,67 @@ export const ChatSidebar = ({
         <div className="p-2 border-t bg-background">
           <div className="flex items-center justify-between">
             {/* 用户信息 */}
-            <Button
-              variant="ghost"
-              className="flex-1 justify-start items-center p-2 h-auto"
-            >
-              <Avatar className="w-8 h-8 mr-2">
-                <AvatarImage src={user?.image} alt={user?.name} />
-                <AvatarFallback>
-                  {user?.name?.charAt(0) || "U"}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 text-left">
-                <p className="font-semibold text-sm truncate">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">{t('online')}</p>
-              </div>
-            </Button>
+            <Dialog open={openSettings} onOpenChange={setOpenSettings}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex-1 justify-start items-center p-2 h-auto"
+                >
+                  <Avatar className="w-8 h-8 mr-2">
+                    <AvatarImage src={user?.image} alt={user?.name} />
+                    <AvatarFallback>
+                      {user?.name?.charAt(0) || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold text-sm truncate">{user?.name}</p>
+                    <p className="text-xs text-muted-foreground">{t('online')}</p>
+                  </div>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{t('settings.title')}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">OpenAI API Key</label>
+                    <Input
+                      value={apiKeys.openai}
+                      onChange={(e) => handleApiKeyChange('openai', e.target.value)}
+                      placeholder="sk-..."
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">火山引擎 API Key</label>
+                    <Input
+                      value={apiKeys.volcengine}
+                      onChange={(e) => handleApiKeyChange('volcengine', e.target.value)}
+                      placeholder="ak-..."
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">智谱 API Key</label>
+                    <Input
+                      value={apiKeys.zhipu}
+                      onChange={(e) => handleApiKeyChange('zhipu', e.target.value)}
+                      placeholder="zhipu-..."
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button variant="ghost" onClick={() => setOpenSettings(false)}>
+                    {t('settings.cancel')}
+                  </Button>
+                  <Button onClick={handleSaveApiKeys}>
+                    {t('settings.save')}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
 
             {/* 语言切换按钮 */}
             <Button

@@ -137,12 +137,14 @@ const AuthenticatedCore = ({ user, onLogout }: AuthenticatedCoreProps) => {
       });
 
       // 3. 连接AI代理
+      const selectedModel = localStorage.getItem('selected_model') || 'gpt-4';
       const response = await fetch(`${backendUrl}/start-ai-agent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           channel_id: newChannel.id,
           channel_type: "messaging",
+          model: selectedModel,
         }),
       });
 

@@ -20,6 +20,7 @@ import React, { useMemo, useState } from "react";
 import { useLocale } from "/@/hooks/use-locale";
 // 导入提示配置
 import { PromptConfig, toolbarPrompts } from "./types/writing-prompts-config";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup } from "/@/components/interaction/dropdown-menu";
 
 /**
  * 写作提示工具栏组件属性接口
@@ -185,9 +186,51 @@ const PromptToolbar: React.FC<PromptToolbarProps> = ({
     return shuffledPrompts.slice(0, 3);
   }, []);
 
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  // 模型选择状态
+  const [selectedModel, setSelectedModel] = useState(localStorage.getItem('selected_model') || 'openai');
+
+  // 处理模型选择变化
+  const handleModelChange = (model: string) => {
+    setSelectedModel(model);
+    localStorage.setItem('selected_model', model);
+  };
+
   return (
     <div className="bg-background border-t">
       <div className="flex items-center px-4 py-2 gap-2">
+        {/* 模型选择下拉菜单 */}
+        <DropdownMenu onOpenChange={setIsMenuOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-24 h-7 px-2 text-xs font-medium flex-shrink-0"
+            >
+              {/* 根据展开状态显示不同的箭头图标 */}
+              {isMenuOpen ? (
+                <ChevronDown className="h-4 w-4 mr-1" />
+              ) : (
+                <ChevronUp className="h-4 w-4 mr-1" />
+              )}
+              {selectedModel === 'openai' && 'OpenAI'}
+              {selectedModel === 'volcengine' && '火山引擎'}
+              {selectedModel === 'zhipu' && '智谱'}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => handleModelChange('openai')}>
+              OpenAI
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleModelChange('volcengine')}>
+              火山引擎
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleModelChange('zhipu')}>
+              智谱
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         {/* 展开/收起按钮 */}
         <Button
           variant="ghost"

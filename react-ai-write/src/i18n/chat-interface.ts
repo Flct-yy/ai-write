@@ -166,5 +166,19 @@ export const chatInterfaceTranslations: Translations = {
   'delete_session.confirm': {
     [Locale.English]: "Delete Session",
     [Locale.Chinese]: "删除会话"
+  },
+
+  // Settings - 设置
+  'settings.title': {
+    [Locale.English]: "API Key Settings",
+    [Locale.Chinese]: "API Key设置"
+  },
+  'settings.cancel': {
+    [Locale.English]: "Cancel",
+    [Locale.Chinese]: "取消"
+  },
+  'settings.save': {
+    [Locale.English]: "Save",
+    [Locale.Chinese]: "保存"
   }
 };
