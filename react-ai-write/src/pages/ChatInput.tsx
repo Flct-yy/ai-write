@@ -16,6 +16,7 @@ import { ArrowRight, Square, X } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // 导入国际化钩子
 import { useLocale } from "../hooks/use-locale";
+import { WritingPromptsToolbar } from "./WritingPromptsToolbar";
 
 /**
  * 聊天输入组件属性接口
@@ -65,6 +66,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const textareaRef = externalTextareaRef || internalTextareaRef;
   // 国际化钩子
   const { t } = useLocale();
+
+  const handlePromptSelect = (prompt: string) => {
+    // Append the prompt to existing text or set it if empty
+    onValueChange(value ? `${value.trim()} ${prompt}` : prompt);
+    textareaRef.current?.focus();
+  };
 
   /**
    * 更新文本区域高度
@@ -138,6 +145,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         showPromptToolbar && "border-t border-border/50"
       )}
     >
+      {showPromptToolbar && (
+        <WritingPromptsToolbar onPromptSelect={handlePromptSelect} />
+      )}
       <div className={cn("p-4", className)}>
         <form onSubmit={handleSubmit}>
           <div className="relative">

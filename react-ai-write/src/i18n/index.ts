@@ -4,6 +4,7 @@ import { loadingScreenTranslations } from "./loading-screen";
 import { chatSidebarTranslations } from "./chat-sidebar";
 import { chatInterfaceTranslations } from "./chat-interface";
 import { chatInputTranslations } from "./chat-input";
+import { writingPromptsToolbarTranslations } from "./writing-prompts-toolbar";
 
 // 支持的语言类型
 export { Locale };
@@ -29,5 +30,6 @@ export const translations: Translations = {
   ...loadingScreenTranslations,
   ...chatSidebarTranslations,
   ...chatInterfaceTranslations,
-  ...chatInputTranslations
+  ...chatInputTranslations,
+  ...writingPromptsToolbarTranslations
 };
