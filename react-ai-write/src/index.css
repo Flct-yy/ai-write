@@ -19,6 +19,7 @@
 
 /* 基础样式层 */
 @layer base {
+
   /* 禁用 HTML 垂直滚动 */
   html {
     overflow-y: hidden;
@@ -74,6 +75,7 @@
 
 /* 基础样式层 - 全局样式 */
 @layer base {
+
   /* 为所有元素添加边框颜色 */
   * {
     @apply border-border;
@@ -171,9 +173,10 @@
 
   /* 聊天应用特定样式 */
   /* 这些现在由 Stream 主题处理，但我们可以保留它们用于覆盖 */
-  
+
   /* 输入指示器动画 */
   @keyframes typing-bounce {
+
     0%,
     60%,
     100% {
@@ -216,4 +219,64 @@
   .str-chat__theme-dark .str-chat__channel-list-messenger {
     background-color: hsl(var(--background));
   }
+}
+
+.channel_window {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+.channel_window .str-chat__channel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+.channel_window .str-chat__container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+.channel_window .str-chat__main-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+/* 日期分隔符样式 - 占满宽度 */
+.str-chat__date-separator {
+  width: 100%;
+  max-width: 100%;
+  margin: 1rem 0;
+  text-align: center;
+  display: flex;
+  padding: 0 1rem;
+  align-items: center;
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.str-chat__date-separator-line {
+  flex: 1;
+  height: 1px;
+  margin: 0 1rem;
+  background-color: hsl(var(--border));
+  border: none;
+}
+
+.str-chat__date-separator-date {
+  padding: 0 1rem;
+  background-color: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-sizing: border-box;
 }

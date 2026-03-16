@@ -15,7 +15,7 @@ import {
   ChevronUp,    // 向上箭头图标
 } from "lucide-react";
 // 导入React和相关钩子
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 // 导入国际化钩子
 import { useLocale } from "/@/hooks/use-locale";
 // 导入提示配置
@@ -177,6 +177,14 @@ const PromptToolbar: React.FC<PromptToolbarProps> = ({
   // 获取国际化翻译函数
   const { t } = useLocale();
 
+  // 使用useMemo缓存随机生成的提示，避免每次渲染都重新随机
+  const randomPrompts = useMemo(() => {
+    // 创建提示数组的副本并随机排序
+    const shuffledPrompts = [...toolbarPrompts].sort(() => Math.random() - 0.5);
+    // 取前3个
+    return shuffledPrompts.slice(0, 3);
+  }, []);
+
   return (
     <div className="bg-background border-t">
       <div className="flex items-center px-4 py-2 gap-2">
@@ -200,13 +208,8 @@ const PromptToolbar: React.FC<PromptToolbarProps> = ({
         {/* 滚动区域，显示前3个提示 */}
         <ScrollArea className="flex-1 max-w-full">
           <div className="flex gap-1 pb-1">
-            {/* 随机显示3个提示 */}
-            {(() => {
-              // 创建提示数组的副本并随机排序
-              const shuffledPrompts = [...toolbarPrompts].sort(() => Math.random() - 0.5);
-              // 取前3个
-              return shuffledPrompts.slice(0, 3);
-            })().map((prompt, index) => (
+            {/* 显示缓存的随机提示 */}
+            {randomPrompts.map((prompt, index) => (
               <PromptButton
                 key={prompt.textKey}
                 prompt={prompt}
@@ -228,7 +231,7 @@ const PromptToolbar: React.FC<PromptToolbarProps> = ({
  * 
  * 整合提示菜单和工具栏，管理展开状态
  */
-export const WritingPromptsToolbar: React.FC<WritingPromptsToolbarProps> = ({
+const WritingPromptsToolbarComponent: React.FC<WritingPromptsToolbarProps> = ({
   onPromptSelect,
   className = "",
 }) => {
@@ -253,3 +256,9 @@ export const WritingPromptsToolbar: React.FC<WritingPromptsToolbarProps> = ({
     </div>
   );
 };
+
+/**
+ * 包装后的写作提示工具栏组件
+ * 使用React.memo避免不必要的重新渲染
+ */
+export const WritingPromptsToolbar = React.memo(WritingPromptsToolbarComponent);

@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 
 // 导入路由钩子
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // 导入Stream Chat类型
 import { Channel, ChannelFilters, ChannelSort } from "stream-chat";
@@ -124,6 +124,7 @@ export const ChatSidebar = ({
 
   // 路由导航
   const navigate = useNavigate();
+  const { channelId } = useParams<{ channelId: string }>();
 
   // 如果用户不存在，返回null
   if (!user) return null;
@@ -176,12 +177,13 @@ export const ChatSidebar = ({
                       : "hover:bg-muted/50"
                   )}
                   onClick={() => {
+                    if (channelId && previewProps.channel.id === channelId) {
+                      return;
+                    }
                     // 设置活动频道
                     setActiveChannel(previewProps.channel);
                     // 导航到聊天页面
                     navigate(`/chat/${previewProps.channel.id}`);
-                    // 关闭侧边栏
-                    onClose();
                   }}
                 >
                   <MessageSquare className="h-4 w-4 mr-2" />
@@ -197,6 +199,8 @@ export const ChatSidebar = ({
                       e.stopPropagation();
                       // 调用删除频道回调
                       onChannelDelete(previewProps.channel);
+                      console.log(previewProps.channel);
+
                     }}
                     title={t('delete_session')}
                   >

@@ -1,33 +1,55 @@
 /**
  * 聊天界面组件
- * 提供聊天功能，包括消息列表、输入区域和AI助手控制
+ * 
+ * 提供完整的聊天功能，包括消息列表、输入区域和AI代理控制
+ * 支持空状态显示、消息列表显示和AI代理状态管理
  */
 
+// 导入AI代理状态钩子
 import { useAIAgentStatus } from "/@/hooks/use-ai-agent-status";
+// 导入图标
 import {
-  Bot,
-  Briefcase,
-  FileText,
-  Lightbulb,
-  MessageSquare,
-  Sparkles,
+  Bot,          // 机器人图标
+  Briefcase,    // 公文包图标
+  FileText,     // 文件文本图标
+  Lightbulb,    // 灯泡图标
+  Menu,         // 菜单图标
+  MessageSquare, // 消息广场图标
+  Sparkles,     // 火花图标
 } from "lucide-react";
-import { useState } from "react";
+// 导入React和相关钩子
+import { useRef, useState } from "react";
+// 导入Stream Chat相关钩子和组件
 import {
-  useChatContext,
+  Channel,                  // 频道组件
+  MessageList,              // 消息列表组件
+  useAIState,               // AI状态钩子
+  useChannelActionContext,  // 频道操作上下文
+  useChannelStateContext,   // 频道状态上下文
+  useChatContext,           // 聊天上下文
+  Window,                   // 窗口组件
 } from "stream-chat-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "/@/components/navigation/tabs";
-import { useLocale } from "/@/hooks/use-locale";
+// 导入侧边栏切换组件
 import { SidebarTrigger } from "/@/components/layout/sidebar";
+// 导入AI代理控制组件
+import { AIAgentControl } from "./AIAgentControl";
+// 导入聊天输入组件
 import { ChatInput, ChatInputProps } from "./ChatInput";
+// 导入聊天消息组件
+import ChatMessage from "./ChatMessage";
+// 导入标签页组件
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "/@/components/navigation/tabs";
+// 导入国际化钩子
+import { useLocale } from "/@/hooks/use-locale";
+
 
 /**
- * 聊天界面组件属性
+ * 聊天界面组件属性接口
  */
 interface ChatInterfaceProps {
   /** 切换侧边栏的回调函数 */
   onToggleSidebar: () => void;
-  /** 发送新聊天消息的回调函数 */
+  /** 新聊天消息的回调函数 */
   onNewChatMessage: (message: { text: string }) => Promise<void>;
   /** 后端API地址 */
   backendUrl: string;
@@ -35,65 +57,68 @@ interface ChatInterfaceProps {
 
 /**
  * 空状态输入组件
- * 当没有活动频道时显示，提供写作提示和输入区域
+ * 
+ * 当没有频道时显示的界面，包含英雄区域和写作提示分类
  */
 const EmptyStateWithInput: React.FC<{
+  /** 发送新消息的回调函数 */
   onNewChatMessage: ChatInputProps["sendMessage"];
 }> = ({ onNewChatMessage }) => {
+  // 输入文本状态
   const [inputText, setInputText] = useState("");
+  // 国际化翻译函数
   const { t } = useLocale();
 
-  // 按类别组织的写作提示
   const writingCategories = [
     {
       id: "business",
       icon: <Briefcase className="h-4 w-4" />,
-      title: t('business'),
+      title: t('categories.business'),
       prompts: [
-        t('write_professional_email'),
-        t('draft_linkedin_post'),
-        t('create_executive_summary'),
-        t('write_persuasive_proposal'),
+        t('prompts.business.email'),
+        t('prompts.business.linkedin'),
+        t('prompts.business.executive_summary'),
+        t('prompts.business.proposal'),
       ],
     },
     {
       id: "content",
       icon: <FileText className="h-4 w-4" />,
-      title: t('content'),
+      title: t('categories.content'),
       prompts: [
-        t('write_blog_post'),
-        t('create_social_media_captions'),
-        t('draft_newsletter'),
-        t('write_product_descriptions'),
+        t('prompts.content.blog'),
+        t('prompts.content.social_media'),
+        t('prompts.content.newsletter'),
+        t('prompts.content.product_descriptions'),
       ],
     },
     {
       id: "communication",
       icon: <MessageSquare className="h-4 w-4" />,
-      title: t('communication'),
+      title: t('categories.communication'),
       prompts: [
-        t('rewrite_clear_concise'),
-        t('improve_professional_tone'),
-        t('create_presentation_script'),
-        t('write_customer_service_responses'),
+        t('prompts.communication.rewrite'),
+        t('prompts.communication.tone'),
+        t('prompts.communication.presentation'),
+        t('prompts.communication.customer_service'),
       ],
     },
     {
       id: "creative",
       icon: <Lightbulb className="h-4 w-4" />,
-      title: t('creative'),
+      title: t('categories.creative'),
       prompts: [
-        t('brainstorm_innovative_solutions'),
-        t('generate_creative_angles'),
-        t('develop_character_backstories'),
-        t('create_compelling_headlines'),
+        t('prompts.creative.brainstorm'),
+        t('prompts.creative.angles'),
+        t('prompts.creative.character'),
+        t('prompts.creative.headlines'),
       ],
     },
   ];
 
   /**
-   * 处理提示点击
-   * @param prompt 选中的提示文本
+   * 处理提示点击事件
+   * @param prompt 提示文本
    */
   const handlePromptClick = (prompt: string) => {
     setInputText(prompt);
@@ -103,7 +128,6 @@ const EmptyStateWithInput: React.FC<{
     <div className="flex flex-col h-full bg-gradient-to-br from-background via-background to-muted/20">
       <div className="flex-1 flex items-center justify-center overflow-y-auto p-6">
         <div className="text-center max-w-3xl w-full">
-          {/* AI助手介绍 */}
           <div className="mb-6">
             <div className="relative inline-flex items-center justify-center w-16 h-16 mb-4">
               <div className="absolute inset-0 bg-primary/20 rounded-2xl animate-pulse"></div>
@@ -111,17 +135,16 @@ const EmptyStateWithInput: React.FC<{
               <Sparkles className="h-4 w-4 text-primary/60 absolute -top-1 -right-1" />
             </div>
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              {t('your_ai_writing_partner')}
+              {t('hero.title')}
             </h1>
             <p className="text-sm text-muted-foreground mb-4">
-              {t('from_first_drafts')}
+              {t('hero.description')}
             </p>
           </div>
 
-          {/* 写作提示类别 - 标签界面 */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-foreground mb-4">
-              {t('what_would_you_like_to_write')}
+              {t('hero.question')}
             </h2>
 
             <Tabs defaultValue="business" className="w-full">
@@ -164,49 +187,160 @@ const EmptyStateWithInput: React.FC<{
         </div>
       </div>
 
-      {/* 输入区域 */}
+      {/* Input */}
       <div className="border-t bg-background/95 backdrop-blur-sm">
         <div className="p-4">
           <ChatInput
             sendMessage={onNewChatMessage}
-            placeholder={t('describe_what_you_d_like_to_write')}
+            placeholder={t('input.placeholder')}
             value={inputText}
             onValueChange={setInputText}
             className="!p-4"
             isGenerating={false}
+            showPromptToolbar={true}
             onStopGenerating={() => { }}
           />
-          {/* 输入提示信息 */}
           <div className="flex items-center justify-center gap-4 mt-3 text-xs text-muted-foreground">
-            <span>{t('press_enter_to_send')}</span>
+            <span>{t('input.enter_to_send')}</span>
             <span>•</span>
-            <span>{t('shift_enter_for_new_line')}</span>
+            <span>{t('input.shift_enter_newline')}</span>
           </div>
         </div>
+      </div>
+    </div >
+  );
+};
+
+/**
+ * 消息列表空状态指示器
+ * 
+ * 当消息列表为空时显示的界面
+ */
+const MessageListEmptyIndicator = () => {
+  // 国际化翻译函数
+  const { t } = useLocale();
+  return (
+    <div className="h-full flex items-center justify-center">
+      <div className="text-center px-4">
+        <div className="relative inline-flex items-center justify-center w-12 h-12 mb-4">
+          <div className="absolute inset-0 bg-primary/10 rounded-xl"></div>
+          <Bot className="h-6 w-6 text-primary/80 relative z-10" />
+        </div>
+        <h2 className="text-lg font-medium text-foreground mb-2">
+          {t('empty_state.title')}
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          {t('empty_state.description')}
+        </p>
       </div>
     </div>
   );
 };
 
 /**
- * 聊天界面组件
- * 提供完整的聊天功能，包括消息列表、输入区域和AI助手控制
+ * 消息列表内容组件
+ * 
+ * 显示消息列表或空状态指示器
+ */
+const MessageListContent = () => {
+  // 从上下文获取消息和线程
+  const { messages, thread } = useChannelStateContext();
+  // 判断是否为线程
+  const isThread = !!thread;
+
+  // 如果是线程，不显示内容
+  if (isThread) return null;
+
+  return (
+    <div className="flex-1 flex flex-col min-h-0">
+      {/* 根据消息是否存在显示不同内容 */}
+      {!messages?.length ? (
+        <MessageListEmptyIndicator />
+      ) : (
+        <MessageList Message={ChatMessage} />
+      )}
+    </div>
+  );
+};
+
+/**
+ * 聊天界面主组件
+ * 
+ * 整合所有聊天相关功能，包括头部、消息列表和输入区域
  */
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onToggleSidebar,
   onNewChatMessage,
   backendUrl,
 }) => {
+  // 从上下文获取频道
   const { channel } = useChatContext();
+  // 国际化翻译函数
   const { t } = useLocale();
+  // AI代理状态
   const agentStatus = useAIAgentStatus({
     channelId: channel?.id ?? null,
     backendUrl,
   });
 
+  /**
+   * 频道消息输入组件
+   * 
+   * 处理频道内的消息输入和发送
+   */
+  const ChannelMessageInputComponent = () => {
+    // 从上下文获取发送消息函数
+    const { sendMessage } = useChannelActionContext();
+    // 从上下文获取频道和消息
+    const { channel, messages } = useChannelStateContext();
+    // 获取AI状态
+    const { aiState } = useAIState(channel);
+    // 输入文本状态
+    const [inputText, setInputText] = useState("");
+    // 文本域引用
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // 判断是否正在生成
+    const isGenerating = aiState === "AI_STATE_THINKING" || aiState === "AI_STATE_GENERATING" || aiState === "AI_STATE_EXTERNAL_SOURCES";
+
+    console.log("aiState", aiState);
+
+    /**
+     * 处理停止生成
+     */
+    const handleStopGenerating = () => {
+      if (channel) {
+        // 查找最新的AI消息
+        const aiMessage = [...messages].reverse().find((m) => m.user?.id.startsWith("ai-bot"));
+        if (aiMessage) {
+          // 发送停止事件
+          channel.sendEvent({
+            type: "ai_indicator.stop",
+            cid: channel.cid,
+            message_id: aiMessage.id,
+          });
+        }
+      }
+    };
+
+    return (
+      <ChatInput
+        sendMessage={sendMessage}
+        value={inputText}
+        onValueChange={setInputText}
+        placeholder={t('input.placeholder')}
+        textareaRef={textareaRef}
+        showPromptToolbar={true}
+        className="!p-4"
+        isGenerating={isGenerating}
+        onStopGenerating={handleStopGenerating}
+      />
+    );
+  };
+
   return (
     <div className="flex flex-col h-full bg-background">
-      {/* 增强的头部 */}
+      {/* 增强头部 */}
       <header className="flex-shrink-0 flex items-center justify-between px-4 py-4 border-b bg-background/95 backdrop-blur-sm z-10">
         <div className="flex items-center gap-3">
           <SidebarTrigger onClick={onToggleSidebar} />
@@ -221,22 +355,42 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
             <div>
               <h2 className="text-sm font-semibold text-foreground">
-                {channel?.data?.name || t('new_writing_session')}
+                {channel?.data?.name || t('header.new_session')}
               </h2>
               <p className="text-xs text-muted-foreground">
-                {t('ai_writing_assistant')} • {t('always_improving')}
+                {t('header.assistant')} • {t('header.improving')}
               </p>
             </div>
           </div>
         </div>
+        {channel?.id && (
+          <AIAgentControl
+            status={agentStatus.status}
+            loading={agentStatus.loading}
+            error={agentStatus.error}
+            toggleAgent={agentStatus.toggleAgent}
+            checkStatus={agentStatus.checkStatus}
+            channelId={channel.id}
+          />
+        )}
       </header>
 
-      {/* 主要内容 */}
-      <div className="flex-1 flex flex-col min-h-0">
-        <EmptyStateWithInput onNewChatMessage={onNewChatMessage} />
+
+      <div className=" min-h-0 channel_window">
+        {!channel ? (
+          <EmptyStateWithInput onNewChatMessage={onNewChatMessage} />
+        ) : (
+          <Channel channel={channel}>
+            <Window>
+              <MessageListContent />
+              <ChannelMessageInputComponent />
+            </Window>
+          </Channel>
+        )}
       </div>
-    </div>
-  );
+    </div >
+  )
 };
 
 export default ChatInterface;
+

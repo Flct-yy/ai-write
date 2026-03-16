@@ -68,7 +68,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const { t } = useLocale();
 
   const handlePromptSelect = (prompt: string) => {
-    // Append the prompt to existing text or set it if empty
+    // 追加提示到现有文本或设置为新文本
+    // 如果现有文本为空，直接设置为提示
     onValueChange(value ? `${value.trim()} ${prompt}` : prompt);
     textareaRef.current?.focus();
   };

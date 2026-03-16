@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 // 导入Stream Chat类型
-import { Channel, User } from "stream-chat";
+import { Channel, ChannelFilters, ChannelSort, User } from "stream-chat";
 
 // 导入Stream Chat上下文
 import { useChatContext } from "stream-chat-react";
@@ -33,7 +33,10 @@ import { useChatContext } from "stream-chat-react";
 // 导入UUID生成器
 import { v4 as uuidv4 } from "uuid";
 
-// 导入聊天组件（暂时注释，文件不存在）
+// 导入国际化钩子
+import { useLocale } from "/@/hooks/use-locale";
+
+// 导入聊天组件
 import ChatInterface from "./ChatInterface";
 
 // 导入侧边栏组件
@@ -79,6 +82,9 @@ const AuthenticatedCore = ({ user, onLogout }: AuthenticatedCoreProps) => {
 
   // 后端API地址
   const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
+
+  // 国际化翻译函数
+  const { t } = useLocale();
 
   /**
    * 同步URL中的频道ID与当前活动频道
@@ -166,8 +172,6 @@ const AuthenticatedCore = ({ user, onLogout }: AuthenticatedCoreProps) => {
     setActiveChannel(undefined);
     // 导航到根路径
     navigate("/");
-    // 关闭侧边栏
-    setSidebarOpen(false);
   };
 
   /**
@@ -225,11 +229,11 @@ const AuthenticatedCore = ({ user, onLogout }: AuthenticatedCoreProps) => {
     );
   }
 
-  // const filters: ChannelFilters = {
-  //   type: "messaging",
-  //   members: { $in: [user.id] },
-  // };
-  // const sort: ChannelSort = { last_message_at: -1 };
+  const filters: ChannelFilters = {
+    type: "messaging",
+    members: { $in: [user.id] },
+  };
+  const sort: ChannelSort = { last_message_at: -1 };
   const options = { state: true, presence: true, limit: 10 };
 
   return (
@@ -252,28 +256,27 @@ const AuthenticatedCore = ({ user, onLogout }: AuthenticatedCoreProps) => {
         </SidebarInset>
 
         {/* 删除写作会话确认对话框 */}
-        {/* <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Writing Session</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this writing session? This action
-              cannot be undone and all content will be permanently deleted.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDeleteCancel}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteConfirm}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
-            >
-              Delete Session
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog> */}
+        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('delete_session.title')}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t('delete_session.description')}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={handleDeleteCancel}>
+                {t('delete_session.cancel')}
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteConfirm}
+                className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+              >
+                {t('delete_session.confirm')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </SidebarProvider>
   );
