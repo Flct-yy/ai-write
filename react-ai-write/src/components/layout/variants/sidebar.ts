@@ -45,3 +45,31 @@ export const sidebarMenuButtonVariants = cva(
  * 基于 sidebarMenuButtonVariants 生成的类型，用于类型检查和智能提示
  */
 export type SidebarMenuButtonVariants = VariantProps<typeof sidebarMenuButtonVariants>;
+
+/**
+ * 侧边栏样式变体
+ * 
+ * 定义侧边栏的样式变体，包括不同的样式选项
+ */
+export const sidebarVariants = cva(
+  "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+  {
+    variants: {
+      variant: {
+        sidebar: "",
+        floating: "rounded-lg border border-sidebar-border shadow",
+        inset: "",
+      },
+    },
+    defaultVariants: {
+      variant: "sidebar",
+    },
+  }
+);
+
+/**
+ * 侧边栏样式变体的类型
+ * 
+ * 基于 sidebarVariants 生成的类型，用于类型检查和智能提示
+ */
+export type SidebarVariants = VariantProps<typeof sidebarVariants>;
